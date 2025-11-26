@@ -28,6 +28,8 @@ Since you already have **Nginx Proxy Manager (NPM)** running, deployment is much
 
 **✨ Updated: Now works with HashRouter - no try_files needed!**
 
+**⚠️ IMPORTANT:** Before building, you MUST update `vite.config.ts` to include your domain in `allowedHosts` (see Step 3 below). This prevents "Blocked request" errors when accessing your site through the NPM proxy.
+
 ### Step 1: Install Node.js & PM2
 
 **SSH to your server:**
@@ -94,6 +96,55 @@ git clone https://github.com/jx4zm98wrw-cloud/landing-page-polish.git .
 # Install dependencies
 npm install
 
+# Configure Vite for NPM proxy (REQUIRED!)
+# Edit vite.config.ts to allow your domain
+nano vite.config.ts
+```
+
+**IMPORTANT: Add allowedHosts to vite.config.ts**
+
+Update the vite.config.ts to include both `server` and `preview` configurations with your domain:
+
+```typescript
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react-swc";
+import path from "path";
+
+export default defineConfig(({ mode }) => ({
+  server: {
+    host: "::",
+    port: 8080,
+    allowedHosts: [
+      'yourdomain.com',
+      'www.yourdomain.com',
+    ],
+    proxy: {
+      '/api': {
+        target: 'http://localhost:3001',
+        changeOrigin: true,
+      },
+    },
+  },
+  preview: {
+    host: "::",
+    port: 8080,
+    allowedHosts: [
+      'yourdomain.com',
+      'www.yourdomain.com',
+    ],
+  },
+  plugins: [react()],
+  resolve: {
+    alias: {
+      "@": path.resolve(__dirname, "./src"),
+    },
+  },
+}));
+```
+
+**⚠️ Replace `yourdomain.com` with your actual domain!**
+
+```bash
 # Build frontend
 npm run build
 ```
@@ -304,6 +355,12 @@ pm2 restart asl-law-api
 pm2 restart asl-frontend
 ```
 
+**Note:** If you update `vite.config.ts` (e.g., change domain or add allowedHosts), you MUST rebuild and restart:
+```bash
+npm run build
+pm2 restart asl-frontend
+```
+
 ### Check NPM Status
 ```
 # NPM runs on port 8181 by default
@@ -374,6 +431,35 @@ ls -la /var/www/asl-law/dist/
 - Domain is correct
 - Forward port is correct (8080)
 - Try accessing the port directly: `http://localhost:8080`
+
+### Frontend Shows "Blocked request" Error
+
+**Error Message:**
+```
+Blocked request. This host ("yourdomain.com") is not allowed.
+To allow this host, add "yourdomain.com" to `preview.allowedHosts` in vite.config.js.
+```
+
+**Solution:**
+
+Update `vite.config.ts` to include your domain in `allowedHosts`:
+
+```typescript
+preview: {
+  host: "::",
+  port: 8080,
+  allowedHosts: [
+    'yourdomain.com',
+    'www.yourdomain.com',
+  ],
+}
+```
+
+Then rebuild:
+```bash
+npm run build
+pm2 restart asl-frontend
+```
 
 ### CORS Errors
 
