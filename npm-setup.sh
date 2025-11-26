@@ -2,7 +2,7 @@
 
 # 🔀 NPM Setup for ASL LAW
 # Run this on a server with Nginx Proxy Manager already installed
-# This script sets up Node.js backend for NPM
+# This script sets up Node.js backend + frontend with HashRouter for NPM
 
 set -e
 
@@ -128,11 +128,16 @@ if [ -d "src" ]; then
     npm run build
 fi
 
-# Stop existing process
+# Stop existing processes
 pm2 delete asl-law-api 2>/dev/null || true
+pm2 delete asl-frontend 2>/dev/null || true
 
-# Start application
+# Start backend
 pm2 start ecosystem.config.js
+
+# Start frontend with Vite Preview
+echo "Starting frontend server..."
+pm2 start "npm run preview -- --host 0.0.0.0 --port 8080" --name "asl-frontend"
 
 # Save PM2 config
 pm2 save
@@ -140,10 +145,13 @@ pm2 save
 echo ""
 echo "✅ Application deployed!"
 echo ""
+echo "Processes running:"
+echo "  - asl-law-api (backend): port 3001"
+echo "  - asl-frontend (frontend): port 8080"
+echo ""
 echo "Next steps:"
-echo "1. Upload your code to: $APP_DIR"
-echo "2. Configure NPM Proxy Hosts (see NPM_DEPLOYMENT_GUIDE.md)"
-echo "3. Setup SSL certificates in NPM UI"
+echo "1. Configure NPM Proxy Hosts (see NPM_DEPLOYMENT_GUIDE.md)"
+echo "2. Setup SSL certificates in NPM UI"
 echo ""
 pm2 status
 EOF
@@ -153,8 +161,8 @@ print_status "Deployment script created"
 
 # Create NPM configuration helper
 cat > $APP_DIR/NPM-CONFIG.txt << 'EOF'
-NPM Proxy Host Configuration
-============================
+NPM Proxy Host Configuration (with HashRouter)
+===============================================
 
 Frontend Proxy Host (yourdomain.com):
 -------------------------------------
@@ -163,12 +171,14 @@ Scheme: http
 Forward Hostname/IP: localhost
 Forward Port: 8080
 
-Advanced Config:
-location / {
-    root /var/www/asl-law/dist;
-    index index.html;
-    try_files $uri $uri/ /index.html;
-}
+Advanced Config: LEAVE EMPTY!
+- HashRouter uses client-side routing (/#/route)
+- No server-side configuration needed!
+
+URLs:
+- Homepage: https://yourdomain.com
+- Admin: https://yourdomain.com/#/admin
+- Dashboard: https://yourdomain.com/#/admin/dashboard
 
 Backend Proxy Host (api.yourdomain.com):
 ----------------------------------------
@@ -177,18 +187,8 @@ Scheme: http
 Forward Hostname/IP: localhost
 Forward Port: 3001
 
-Advanced Config:
-location / {
-    proxy_pass http://localhost:3001;
-    proxy_http_version 1.1;
-    proxy_set_header Upgrade $http_upgrade;
-    proxy_set_header Connection 'upgrade';
-    proxy_set_header Host $host;
-    proxy_cache_bypass $http_upgrade;
-    proxy_set_header X-Real-IP $remote_addr;
-    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-    proxy_set_header X-Forwarded-Proto $scheme;
-}
+Advanced Config: LEAVE EMPTY!
+- Basic proxy is sufficient
 
 SSL Setup:
 ----------
@@ -200,6 +200,9 @@ SSL Setup:
 6. Save
 
 Update domain names to your actual domain!
+
+Note: If NPM and app are on different servers, use the app server IP
+in "Forward Hostname/IP" instead of "localhost"
 EOF
 
 print_status "NPM config helper created"

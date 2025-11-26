@@ -20,9 +20,13 @@ Since you already have **Nginx Proxy Manager (NPM)** running, deployment is much
 - 🌐 Web UI for easy management
 - 📊 Simple routing rules
 
+**🎉 Key Feature: HashRouter** - The app uses client-side routing with hash-based URLs (e.g., `/#/admin`), so no server-side configuration needed!
+
 ---
 
 ## ⚡ Quick Start (5 Minutes)
+
+**✨ Updated: Now works with HashRouter - no try_files needed!**
 
 ### Step 1: Install Node.js & PM2
 
@@ -140,9 +144,32 @@ pm2 status
 └─────┴────────────────┴─────────┴─────────┴─────────┴──────────┘
 ```
 
-### Step 5: Configure NPM Proxy Hosts
+### Step 5: Start Frontend Server (Vite Preview)
+
+**Run frontend with Vite Preview via PM2:**
+
+```bash
+cd /var/www/asl-law
+
+# Start frontend on port 8080
+pm2 start "npm run preview -- --host 0.0.0.0 --port 8080" --name "asl-frontend"
+
+# Save PM2 config
+pm2 save
+
+# Check status
+pm2 status
+```
+
+**You should see:**
+- `asl-law-api` on port 3001
+- `asl-frontend` on port 8080
+
+### Step 6: Configure NPM Proxy Hosts
 
 **In NPM Web UI (http://your-server-ip:8181):**
+
+**Note:** If NPM and app are on different servers, use the app server's IP in "Forward Hostname/IP"!
 
 #### A. Frontend Domain (yourdomain.com)
 
@@ -151,16 +178,9 @@ pm2 status
 3. **Details Tab:**
    - **Domain Names:** `yourdomain.com,www.yourdomain.com`
    - **Scheme:** `http`
-   - **Forward Hostname/IP:** `localhost`
-   - **Forward Port:** `8080` (or where frontend is served)
-   - **Advanced Tab** (if needed):
-     ```nginx
-     location / {
-         root /var/www/asl-law/dist;
-         index index.html;
-         try_files $uri $uri/ /index.html;
-     }
-     ```
+   - **Forward Hostname/IP:** `localhost` (or `192.168.1.177` if on different server)
+   - **Forward Port:** `8080`
+   - **Advanced Tab:** **Leave empty!** (HashRouter needs no special config)
 
 #### B. Backend API (api.yourdomain.com)
 
@@ -169,24 +189,13 @@ pm2 status
 3. **Details Tab:**
    - **Domain Names:** `api.yourdomain.com`
    - **Scheme:** `http`
-   - **Forward Hostname/IP:** `localhost`
+   - **Forward Hostname/IP:** `localhost` (or `192.168.1.177` if on different server)
    - **Forward Port:** `3001`
-   - **Advanced Tab:**
-     ```nginx
-     location / {
-         proxy_pass http://localhost:3001;
-         proxy_http_version 1.1;
-         proxy_set_header Upgrade $http_upgrade;
-         proxy_set_header Connection 'upgrade';
-         proxy_set_header Host $host;
-         proxy_cache_bypass $http_upgrade;
-         proxy_set_header X-Real-IP $remote_addr;
-         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-         proxy_set_header X-Forwarded-Proto $scheme;
-     }
-     ```
+   - **Advanced Tab:** **Leave empty!** (Basic proxy is fine)
 
-### Step 6: Setup SSL Certificates
+**✨ HashRouter Advantage:** No try_files or special nginx config needed!
+
+### Step 7: Setup SSL Certificates
 
 **In NPM Web UI:**
 
@@ -214,8 +223,10 @@ pm2 status
 ## ✅ Test Deployment
 
 **Visit:**
-- https://yourdomain.com
-- https://api.yourdomain.com/api/contact
+- https://yourdomain.com (Homepage)
+- https://yourdomain.com/#/admin (Admin Login)
+- https://yourdomain.com/#/admin/dashboard (Admin Dashboard)
+- https://api.yourdomain.com/api/contact (Backend API)
 
 **Check API directly:**
 ```bash
@@ -228,55 +239,42 @@ curl -X POST https://api.yourdomain.com/api/contact \
 
 ## 🔧 NPM Configuration Examples
 
-### Frontend Proxy Host (Static Files)
+### Frontend Proxy Host (with HashRouter)
 
 **Domain:** `yourdomain.com`
 
 **Scheme:** `http`
-**Forward Hostname/IP:** `localhost`
+**Forward Hostname/IP:** `localhost` (or app server IP if different)
 **Forward Port:** `8080`
 
 **Advanced → Custom Nginx Configuration:**
-```nginx
-location / {
-    root /var/www/asl-law/dist;
-    index index.html;
-    try_files $uri $uri/ /index.html;
-
-    # Handle React Router
-    location ~* \.(?:ico|css|js|gif|jpe?g|png|svg|woff|woff2|ttf|eot)$ {
-        expires 1y;
-        add_header Cache-Control "public, immutable";
-    }
-}
 ```
+Leave EMPTY! HashRouter needs no special configuration.
+```
+
+**Why this works:**
+- HashRouter uses `/#/route` format
+- All routes are handled client-side by React
+- No server-side routing needed!
 
 ### Backend Proxy Host (API)
 
 **Domain:** `api.yourdomain.com`
 
 **Scheme:** `http`
-**Forward Hostname/IP:** `localhost`
+**Forward Hostname/IP:** `localhost` (or app server IP if different)
 **Forward Port:** `3001`
 
 **Advanced → Custom Nginx Configuration:**
-```nginx
-location / {
-    proxy_pass http://localhost:3001;
-    proxy_http_version 1.1;
-    proxy_set_header Upgrade $http_upgrade;
-    proxy_set_header Connection 'upgrade';
-    proxy_set_header Host $host;
-    proxy_cache_bypass $http_upgrade;
-    proxy_set_header X-Real-IP $remote_addr;
-    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-    proxy_set_header X-Forwarded-Proto $scheme;
+```
+Leave EMPTY! Basic proxy is sufficient.
+```
 
-    # CORS headers
-    add_header 'Access-Control-Allow-Origin' 'https://yourdomain.com' always;
-    add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS' always;
-    add_header 'Access-Control-Allow-Headers' 'DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization' always;
-}
+**Or add CORS headers if needed:**
+```nginx
+add_header 'Access-Control-Allow-Origin' 'https://yourdomain.com' always;
+add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS' always;
+add_header 'Access-Control-Allow-Headers' 'DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range' always;
 ```
 
 ---
@@ -301,7 +299,9 @@ cd /var/www/asl-law
 git pull
 npm install
 npm run build
+# Restart both processes
 pm2 restart asl-law-api
+pm2 restart asl-frontend
 ```
 
 ### Check NPM Status

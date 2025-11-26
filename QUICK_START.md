@@ -32,13 +32,21 @@ npm install && npm run build
 
 **Frontend Proxy Host:**
 - Domain: `yourdomain.com,www.yourdomain.com`
-- Forward to: `localhost:8080`
+- Scheme: `http`
+- Forward: `localhost:8080`
+- **Advanced tab: Leave EMPTY!** (HashRouter needs no config)
 
 **Backend Proxy Host:**
 - Domain: `api.yourdomain.com`
-- Forward to: `localhost:3001`
+- Scheme: `http`
+- Forward: `localhost:3001`
+- **Advanced tab: Leave EMPTY!** (Basic proxy is fine)
 
 **SSL:** One-click in NPM UI for each domain!
+
+**✨ HashRouter URLs:**
+- Homepage: `https://yourdomain.com`
+- Admin: `https://yourdomain.com/#/admin`
 
 **Total time: ~7 minutes!** 🚀
 

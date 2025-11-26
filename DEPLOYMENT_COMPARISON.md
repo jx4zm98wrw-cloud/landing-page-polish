@@ -45,12 +45,15 @@ npm run build
 - ✅ **Multiple domains** - Easy to add more
 - ✅ **Already set up** - No new dependencies
 - ✅ **Built-in features** - Rate limiting, auth, etc.
+- ✅ **HashRouter support** - No try_files needed!
 
 ### Cons:
 - ❌ Requires NPM already installed
 - ❌ Learning NPM UI (but it's simple)
 
 **Perfect if you already have NPM! 🎯**
+
+**Key Feature: HashRouter** - The app uses hash-based URLs (`/#/admin`), so no server-side routing configuration is needed!
 
 ---
 
