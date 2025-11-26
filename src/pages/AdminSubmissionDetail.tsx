@@ -53,6 +53,7 @@ const AdminSubmissionDetail = () => {
   const [loading, setLoading] = useState(true);
   const [notes, setNotes] = useState("");
   const [saving, setSaving] = useState(false);
+  const API_URL = "https://api.asl.mirbase.io.vn";
 
   useEffect(() => {
     const auth = localStorage.getItem("adminAuth");
@@ -66,7 +67,7 @@ const AdminSubmissionDetail = () => {
 
   const fetchSubmission = async () => {
     try {
-      const response = await fetch(`/api/submissions/${id}`);
+      const response = await fetch(`${API_URL}/api/submissions/${id}`);
       if (response.ok) {
         const data = await response.json();
         setSubmission(data);
@@ -84,7 +85,7 @@ const AdminSubmissionDetail = () => {
 
   const handleStatusChange = async (status: "new" | "contacted" | "closed") => {
     try {
-      const response = await fetch(`/api/submissions/${id}`, {
+      const response = await fetch(`${API_URL}/api/submissions/${id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ status }),
@@ -100,7 +101,7 @@ const AdminSubmissionDetail = () => {
   const handleSaveNotes = async () => {
     setSaving(true);
     try {
-      const response = await fetch(`/api/submissions/${id}`, {
+      const response = await fetch(`${API_URL}/api/submissions/${id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ notes }),

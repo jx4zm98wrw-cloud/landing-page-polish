@@ -79,6 +79,7 @@ const AdminDashboard = () => {
   const [statusFilter, setStatusFilter] = useState<"all" | "new" | "contacted" | "closed">("all");
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  const API_URL = "https://api.asl.mirbase.io.vn";
 
   useEffect(() => {
     // Check authentication
@@ -114,7 +115,7 @@ const AdminDashboard = () => {
 
   const fetchSubmissions = async () => {
     try {
-      const response = await fetch("/api/submissions");
+      const response = await fetch(`${API_URL}/api/submissions`);
       const data = await response.json();
       // Add status field if not present (for backward compatibility)
       const withStatus = data.map((s: any) => ({
@@ -137,7 +138,7 @@ const AdminDashboard = () => {
 
   const handleDelete = async (id: string) => {
     try {
-      const response = await fetch(`/api/submissions/${id}`, {
+      const response = await fetch(`${API_URL}/api/submissions/${id}`, {
         method: "DELETE",
       });
       if (response.ok) {
@@ -150,7 +151,7 @@ const AdminDashboard = () => {
 
   const handleUpdateStatus = async (id: string, status: "new" | "contacted" | "closed") => {
     try {
-      const response = await fetch(`/api/submissions/${id}`, {
+      const response = await fetch(`${API_URL}/api/submissions/${id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ status }),
