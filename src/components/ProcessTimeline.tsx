@@ -5,13 +5,13 @@ const ProcessTimeline = () => {
     {
       number: "01",
       icon: Search,
-      title: "Tra cứu & Tư vấn miễn phí",
+      title: "Tra cứu & Tư vấn",
       duration: "1-2 ngày",
-      description: "Tra cứu khả năng đăng ký và đánh giá xung đột nhãn hiệu. Tư vấn chiến lược bảo hộ phù hợp với ngân sách và mục tiêu kinh doanh.",
+      description: "Miễn phí tra cứu khả năng đăng ký. Đánh giá rủi ro và tư vấn chiến lược bảo hộ phù hợp với mục tiêu cùng ngân sách kinh doanh của doanh nghiệp.",
       details: [
         "Tra cứu sơ bộ miễn phí",
         "Đánh giá xung đột tiềm ẩn",
-        "Tư vấn nhóm ngành nghề đăng ký",
+        "Tư vấn nhóm ngành nghề",
         "Báo giá chi tiết dịch vụ",
       ],
     },
@@ -20,7 +20,7 @@ const ProcessTimeline = () => {
       icon: FileText,
       title: "Ký Hợp đồng & Nộp Đơn",
       duration: "3-5 ngày",
-      description: "Ký hợp đồng dịch vụ, chuẩn bị hồ sơ và nộp đơn tại Cục SHTT. Đảm bảo mọi thủ tục được thực hiện đúng quy định pháp luật.",
+      description: "Ký kết hợp đồng dịch vụ, chuẩn bị bộ hồ sơ chuẩn hóa và thực hiện nộp đơn tại Cục Sở Hữu Trí Tuệ, bảo đảm toàn bộ quy trình tuân thủ đúng quy định pháp luật.",
       details: [
         "Ký hợp đồng dịch vụ",
         "Chuẩn bị hồ sơ đăng ký",
@@ -33,7 +33,7 @@ const ProcessTimeline = () => {
       icon: CheckCircle,
       title: "Theo Dõi & Thẩm Định",
       duration: "6-12 tháng",
-      description: "Theo dõi quá trình thẩm định, phản hồi yêu cầu từ Cục SHTT (nếu có). Cập nhật tiến độ định kỳ cho khách hàng.",
+      description: "Theo dõi tiến trình thẩm định, xử lý yêu cầu phát sinh từ Cục Sở Hữu Trí Tuệ nếu có và cập nhật tiến độ định kỳ, giúp khách hàng nắm rõ tình trạng hồ sơ.",
       details: [
         "Theo dõi thẩm định hình thức",
         "Theo dõi thẩm định nội dung",
@@ -46,7 +46,7 @@ const ProcessTimeline = () => {
       icon: Award,
       title: "Nhận Văn Bằng & Bảo Hộ",
       duration: "Tháng 12-18",
-      description: "Nhận Giấy chứng nhận đăng ký nhãn hiệu và hướng dẫn sử dụng. Hỗ trợ gia hạn và bảo hộ trong tương lai.",
+      description: "Nhận Giấy chứng nhận đăng ký nhãn hiệu, được hướng dẫn sử dụng đúng quy chuẩn và được hỗ trợ gia hạn, duy trì bảo hộ ổn định trong tương lai.",
       details: [
         "Nhận Giấy chứng nhận đăng ký",
         "Hướng dẫn sử dụng văn bằng",

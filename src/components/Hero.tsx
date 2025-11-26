@@ -22,7 +22,8 @@ const Hero = () => {
             <ul className="space-y-4">
               {[
                 "Đại diện Sở hữu Công nghiệp được Cục SHTT cấp phép",
-                "Miễn phí tra cứu đánh giá khả năng bảo hộ",
+                "Miễn phí tra cứu sơ bộ", 
+                "Đánh giá khả năng bảo hộ và tư vấn chiến lược",
                 "Quy trình tiêu chuẩn quốc tế – Minh bạch tiến độ",
               ].map((item, index) => (
                 <li key={index} className="flex items-start gap-3">

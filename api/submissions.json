@@ -7,7 +7,9 @@
     "trademark": "Test Brand",
     "message": "This is a test submission",
     "timestamp": "2025-11-26T02:22:15.764Z",
-    "source": "landing-page"
+    "source": "landing-page",
+    "status": "contacted",
+    "updatedAt": "2025-11-26T04:44:17.280Z"
   },
   {
     "id": "1764123994839",
@@ -17,7 +19,9 @@
     "trademark": "MMT",
     "message": "",
     "timestamp": "2025-11-26T02:26:34.839Z",
-    "source": "landing-page"
+    "source": "landing-page",
+    "status": "closed",
+    "updatedAt": "2025-11-26T04:44:38.269Z"
   },
   {
     "id": "1764124254988",
