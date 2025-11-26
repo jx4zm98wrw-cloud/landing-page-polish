@@ -1,104 +1,90 @@
-# ⚡ Quick Start - Ubuntu Deployment
+# ⚡ Quick Start - Deployment Guide
 
-**Copy this ONE command and paste into your Ubuntu server!**
+**Choose the option that matches your setup:**
 
 ---
 
-## 1️⃣ Setup Server (2 minutes)
+## 🎯 Option 1: You Have Nginx Proxy Manager (NPM) - EASIEST!
 
-**SSH to your Ubuntu server:**
+**If you already have NPM running, use this:**
+
+### 1️⃣ Setup (2 minutes)
 ```bash
-ssh root@YOUR_SERVER_IP
+# Install Node.js & PM2
+curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+sudo apt-get install -y nodejs
+sudo npm install -g pm2
+
+# Run NPM setup
+bash npm-setup.sh
 ```
 
-**Run this ONE command:**
+### 2️⃣ Deploy Code (2 minutes)
 ```bash
+cd ~/asl-law
+git clone https://github.com/jx4zm98wrw-cloud/landing-page-polish.git .
+npm install && npm run build
+./deploy.sh
+```
+
+### 3️⃣ Configure NPM (3 minutes) - Via Web UI
+**Go to:** http://your-server-ip:8181
+
+**Frontend Proxy Host:**
+- Domain: `yourdomain.com,www.yourdomain.com`
+- Forward to: `localhost:8080`
+
+**Backend Proxy Host:**
+- Domain: `api.yourdomain.com`
+- Forward to: `localhost:3001`
+
+**SSL:** One-click in NPM UI for each domain!
+
+**Total time: ~7 minutes!** 🚀
+
+---
+
+## 🎯 Option 2: Plain Ubuntu Server (No NPM)
+
+**If you DON'T have NPM:**
+
+### 1️⃣ Setup (2 minutes)
+```bash
+ssh root@YOUR_SERVER_IP
 curl -fsSL https://raw.githubusercontent.com/jx4zm98wrw-cloud/landing-page-polish/main/ubuntu-setup.sh | bash
 ```
 
-**That's it!** Everything installs automatically:
-- ✅ Node.js 20.x
-- ✅ PM2
-- ✅ Nginx
-- ✅ Certbot (SSL)
-- ✅ All configurations created
-
----
-
-## 2️⃣ Upload Your Code (2 minutes)
-
-**From your local computer:**
-
+### 2️⃣ Deploy Code (2 minutes)
 ```bash
-# Build frontend
+# From your local machine
 npm run build
+scp -r dist/* api/ root@YOUR_SERVER_IP:/var/www/asl-law/
 
-# Upload everything to server
-scp -r dist/* api/ package.json root@YOUR_SERVER_IP:/var/www/asl-law/
-```
-
-**OR if using Git on server:**
-```bash
-ssh root@YOUR_SERVER_IP
+# OR on server
 cd /var/www/asl-law
 git clone https://github.com/jx4zm98wrw-cloud/landing-page-polish.git .
-npm install
-npm run build
+npm install && npm run build
 ```
 
----
-
-## 3️⃣ Start Application (1 minute)
-
+### 3️⃣ Start Application (1 minute)
 ```bash
-ssh root@YOUR_SERVER_IP
 /var/www/asl-law/start.sh
 ```
 
-**Should see:**
-```
-✅ ASL LAW is running!
-[PM2 status showing asl-law-api online]
-```
-
----
-
-## 4️⃣ Configure Domain (2 minutes)
-
-**Edit Nginx config:**
+### 4️⃣ Configure Nginx (2 minutes)
 ```bash
 nano /etc/nginx/sites-available/asl-law
-```
-
-**Change line 3:**
-```nginx
-# From:
-server_name yourdomain.com www.yourdomain.com;
-
-# To:
-server_name YOUR_ACTUAL_DOMAIN.com www.YOUR_ACTUAL_DOMAIN.com;
-```
-
-**Enable site and restart:**
-```bash
+# Change domain name
 ln -s /etc/nginx/sites-available/asl-law /etc/nginx/sites-enabled/
 nginx -t && systemctl reload nginx
 ```
 
----
-
-## 5️⃣ Setup SSL (2 minutes)
-
+### 5️⃣ Setup SSL (2 minutes)
 ```bash
 certbot --nginx -d YOUR_DOMAIN.com -d www.YOUR_DOMAIN.com
 ```
 
-**Follow prompts:**
-- Enter email
-- Agree to terms
-- Choose "Redirect" (option 2)
-
-**Done!** 🎉
+**Total time: ~10 minutes!**
 
 ---
 
