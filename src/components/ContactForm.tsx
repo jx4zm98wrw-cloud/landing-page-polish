@@ -74,14 +74,34 @@ const ContactForm = ({ isCompact = false }: ContactFormProps) => {
         return;
       }
 
-      setLogoFile(file);
+      // For files > 300KB, compress them automatically
+      if (file.size > 300 * 1024) {
+        toast({
+          title: "Đang nén hình ảnh...",
+          description: "Hình ảnh sẽ được tối ưu hóa để gửi nhanh hơn",
+        });
 
-      // Create preview
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setLogoPreview(reader.result as string);
-      };
-      reader.readAsDataURL(file);
+        compressImage(file).then((compressedDataUrl) => {
+          setLogoPreview(compressedDataUrl);
+          // Create a compressed file from the data URL
+          fetch(compressedDataUrl)
+            .then(res => res.blob())
+            .then(blob => {
+              const compressedFile = new File([blob], file.name.replace(/\.[^/.]+$/, "") + "_compressed.jpg", { type: 'image/jpeg' });
+              setLogoFile(compressedFile);
+            });
+        });
+      } else {
+        // Small files - use as-is
+        setLogoFile(file);
+
+        // Create preview
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          setLogoPreview(reader.result as string);
+        };
+        reader.readAsDataURL(file);
+      }
     }
   };
 
@@ -102,6 +122,31 @@ const ContactForm = ({ isCompact = false }: ContactFormProps) => {
     });
   };
 
+  // Compress image to reduce size for large files
+  const compressImage = (file: File, maxWidth = 800, quality = 0.8): Promise<string> => {
+    return new Promise((resolve) => {
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d')!;
+      const img = new Image();
+
+      img.onload = () => {
+        // Calculate new dimensions
+        const ratio = Math.min(maxWidth / img.width, maxWidth / img.height);
+        const width = img.width * ratio;
+        const height = img.height * ratio;
+
+        canvas.width = width;
+        canvas.height = height;
+
+        // Draw and compress
+        ctx.drawImage(img, 0, 0, width, height);
+        resolve(canvas.toDataURL('image/jpeg', quality));
+      };
+
+      img.src = URL.createObjectURL(file);
+    });
+  };
+
   const onSubmit = async (data: FormValues) => {
     setIsSubmitting(true);
     try {
@@ -117,8 +162,14 @@ const ContactForm = ({ isCompact = false }: ContactFormProps) => {
       // Add logo if uploaded
       if (logoFile) {
         submissionData.logo = await convertFileToBase64(logoFile);
-        submissionData.logoName = logoFile.name;
-        submissionData.logoType = logoFile.type;
+        // Update filename and type if it's a compressed file
+        if (logoFile.name.includes('_compressed')) {
+          submissionData.logoName = logoFile.name;
+          submissionData.logoType = 'image/jpeg';
+        } else {
+          submissionData.logoName = logoFile.name;
+          submissionData.logoType = logoFile.type;
+        }
       }
 
       const response = await fetch('https://api.asl.mirbase.io.vn/api/contact', {
@@ -248,7 +299,7 @@ const ContactForm = ({ isCompact = false }: ContactFormProps) => {
                     <span className="font-medium text-primary">Click để tải lên</span> hoặc kéo thả file
                   </div>
                   <div className="text-xs text-muted-foreground">
-                    PNG, JPG, GIF tối đa 5MB
+                    PNG, JPG, GIF tối đa 5MB (hình ảnh lớn sẽ được tự động nén)
                   </div>
                 </label>
               </div>

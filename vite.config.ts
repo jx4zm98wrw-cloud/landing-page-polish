@@ -7,12 +7,24 @@ export default defineConfig(({ mode }) => ({
   server: {
     host: "::",
     port: 8080,
+    allowedHosts: [
+      'asl.mirbase.io.vn',
+      'api.mirbase.io.vn',
+    ],
     proxy: {
       '/api': {
         target: 'http://localhost:3001',
         changeOrigin: true,
       },
     },
+  },
+  preview: {
+    host: "::",
+    port: 8080,
+    allowedHosts: [
+      'asl.mirbase.io.vn',
+      'api.mirbase.io.vn',
+    ],
   },
   plugins: [react()],
   resolve: {
