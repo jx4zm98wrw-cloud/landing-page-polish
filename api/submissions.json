@@ -1,0 +1,47 @@
+[
+  {
+    "id": "1764123735764",
+    "name": "Test User",
+    "phone": "0123456789",
+    "email": "test@example.com",
+    "trademark": "Test Brand",
+    "message": "This is a test submission",
+    "timestamp": "2025-11-26T02:22:15.764Z",
+    "source": "landing-page"
+  },
+  {
+    "id": "1764123994839",
+    "name": "Luong Ngoc Khuong",
+    "phone": "0962790183",
+    "email": "",
+    "trademark": "MMT",
+    "message": "",
+    "timestamp": "2025-11-26T02:26:34.839Z",
+    "source": "landing-page"
+  },
+  {
+    "id": "1764124254988",
+    "name": "Nguyễn Văn A",
+    "phone": "0987654321",
+    "email": "testadmin@example.com",
+    "trademark": "Brand Mới",
+    "message": "Test admin dashboard",
+    "timestamp": "2025-11-26T02:30:54.988Z",
+    "source": "landing-page",
+    "status": "new"
+  },
+  {
+    "id": "1764126503460",
+    "name": "Test Logo Upload",
+    "phone": "0987654321",
+    "email": "testlogo@example.com",
+    "trademark": "Logo Test Brand",
+    "message": "Testing logo upload feature",
+    "timestamp": "2025-11-26T03:08:23.460Z",
+    "source": "landing-page",
+    "status": "new",
+    "logo": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
+    "logoName": "test-logo.png",
+    "logoType": "image/png"
+  }
+]

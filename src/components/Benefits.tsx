@@ -33,7 +33,7 @@ const Benefits = () => {
     <section id="benefits" className="py-20 bg-secondary/30">
       <div className="container-custom">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">Tại sao chọn ASL LAW?</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">Những lợi ích vượt trội</h2>
           <p className="text-lg text-muted-foreground">
             Đối tác pháp lý chiến lược trong mọi vấn đề về Sở hữu trí tuệ
           </p>

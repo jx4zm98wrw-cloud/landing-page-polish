@@ -39,16 +39,24 @@ const Footer = () => {
             <h4 className="text-lg font-bold mb-4">Dịch vụ</h4>
             <ul className="space-y-2">
               {[
-                "Đăng ký bảo hộ nhãn hiệu",
-                "Đăng ký bản quyền",
-                "Đăng ký kiểu dáng công nghiệp",
-                "Đăng ký sáng chế",
-                "Xử lý xâm phạm SHTT",
+                { name: "Đăng ký bảo hộ nhãn hiệu", href: "#documents" },
+                { name: "Đăng ký bản quyền", href: "#documents" },
+                { name: "Đăng ký kiểu dáng công nghiệp", href: "#documents" },
+                { name: "Đăng ký sáng chế", href: "#documents" },
+                { name: "Xử lý xâm phạm SHTT", href: "#documents" },
               ].map((service, index) => (
                 <li key={index}>
-                  <a href="#documents" className="text-gray-300 hover:text-accent transition-colors">
-                    {service}
-                  </a>
+                  <button
+                    onClick={() => {
+                      const element = document.getElementById(service.href.substring(1));
+                      if (element) {
+                        element.scrollIntoView({ behavior: 'smooth' });
+                      }
+                    }}
+                    className="text-gray-300 hover:text-accent transition-colors text-left"
+                  >
+                    {service.name}
+                  </button>
                 </li>
               ))}
             </ul>

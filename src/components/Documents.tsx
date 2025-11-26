@@ -49,6 +49,9 @@ const Documents = () => {
               src={documentsImg}
               alt="Hồ sơ đăng ký nhãn hiệu"
               className="w-full rounded-xl"
+              loading="lazy"
+              width={800}
+              height={600}
             />
           </div>
         </div>

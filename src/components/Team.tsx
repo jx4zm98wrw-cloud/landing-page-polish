@@ -80,6 +80,9 @@ const Team = () => {
                 src={lawyer.image}
                 alt={lawyer.name}
                 className="w-full aspect-[3/4] object-cover rounded-lg mb-4"
+                loading="lazy"
+                width={400}
+                height={533}
               />
               <h3 className="text-xl font-bold mb-1">{lawyer.name}</h3>
               <p className="text-primary font-semibold mb-4">{lawyer.role}</p>

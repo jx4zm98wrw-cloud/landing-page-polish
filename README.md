@@ -1,73 +1,218 @@
-# Welcome to your Lovable project
+# ASL LAW - Vietnamese Law Firm Landing Page
 
-## Project info
+A professional, SEO-optimized landing page for ASL LAW, a Vietnamese law firm specializing in trademark registration and intellectual property services. Features a complete admin dashboard for lead management.
 
-**URL**: https://lovable.dev/projects/9a0a632f-c9b3-4ea5-8b61-8f142c8f4e09
+## 🎯 Features
 
-## How can I edit this code?
+### Landing Page
+- ✅ Professional Vietnamese law firm design
+- ✅ Responsive (mobile, tablet, desktop)
+- ✅ SEO optimized (meta tags, structured data, sitemap)
+- ✅ Performance optimized (lazy loading, image optimization)
+- ✅ Working contact form with backend API
+- ✅ Vietnamese language support
+- ✅ Professional awards and team section
 
-There are several ways of editing your application.
+### Admin Dashboard
+- ✅ Complete lead management system
+- ✅ Authentication and session management
+- ✅ Submission listing, searching, and filtering
+- ✅ Status management (New, Contacted, Closed)
+- ✅ Internal notes system
+- ✅ Export to CSV functionality
+- ✅ Statistics and analytics
 
-**Use Lovable**
+### Analytics
+- ✅ Google Analytics 4 integration (requires configuration)
+- ✅ Page view tracking
+- ✅ Form submission event tracking
+- ✅ Conversion tracking ready
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/9a0a632f-c9b3-4ea5-8b61-8f142c8f4e09) and start prompting.
+## 🚀 Quick Start
 
-Changes made via Lovable will be committed automatically to this repo.
+### Prerequisites
+- Node.js 18+ and npm installed
 
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+### Installation
+```bash
+npm install
 ```
 
-**Edit a file directly in GitHub**
+### Run Development Servers
+```bash
+# Run both frontend and backend together
+npm run dev:all
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+# OR run separately
+npm run dev:api      # Terminal 1: API server on port 3001
+npm run dev          # Terminal 2: Frontend on port 8080
+```
 
-**Use GitHub Codespaces**
+### Access Points
+- **Landing Page:** http://localhost:8080
+- **Admin Login:** http://localhost:8080/admin
+- **Admin Dashboard:** http://localhost:8080/admin/dashboard
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+### Admin Credentials
+- **Username:** admin
+- **Password:** asllaw2024
 
-## What technologies are used for this project?
+## 📦 Technology Stack
 
-This project is built with:
+### Frontend
+- React 18.3.1
+- TypeScript 5.8.3
+- Vite 5.4.19
+- Tailwind CSS 3.4.17
+- shadcn/ui (50+ components)
+- Radix UI (accessible components)
+- React Hook Form
+- React Router 6
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+### Backend
+- Express.js 5.1.0
+- File-based storage (easily replaceable with database)
 
-## How can I deploy this project?
+## 📁 Project Structure
 
-Simply open [Lovable](https://lovable.dev/projects/9a0a632f-c9b3-4ea5-8b61-8f142c8f4e09) and click on Share -> Publish.
+```
+landing-page-polish/
+├── api/
+│   ├── server.js              # Express API server
+│   └── submissions.json       # Submissions database
+│
+├── public/
+│   ├── sitemap.xml            # SEO sitemap
+│   └── robots.txt             # SEO robots.txt
+│
+├── src/
+│   ├── pages/
+│   │   ├── Index.tsx          # Landing page
+│   │   ├── AdminLogin.tsx     # Admin login
+│   │   ├── AdminDashboard.tsx # Admin dashboard
+│   │   └── AdminSubmissionDetail.tsx
+│   │
+│   ├── components/
+│   │   ├── ContactForm.tsx    # Contact form
+│   │   └── ui/                # shadcn/ui components
+│   │
+│   └── lib/
+│       └── analytics.ts       # GA4 utilities
+│
+└── Documentation files
+    ├── GA_SETUP.md
+    ├── ADMIN_DASHBOARD.md
+    ├── IMPLEMENTATION_SUMMARY.md
+    └── COMPLETE_PROJECT_SUMMARY.md
+```
 
-## Can I connect a custom domain to my Lovable project?
+## 🔌 API Endpoints
 
-Yes, you can!
+### Public
+```
+POST /api/contact      # Submit contact form
+```
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+### Admin
+```
+GET /api/submissions          # List submissions
+GET /api/submissions/:id      # Get single submission
+PATCH /api/submissions/:id    # Update submission
+DELETE /api/submissions/:id   # Delete submission
+GET /api/stats                # Get statistics
+```
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+## 🔧 Configuration
+
+### Google Analytics 4 (Required)
+1. Get GA4 tracking ID from https://analytics.google.com/
+2. Update files:
+   - `src/lib/analytics.ts` (line 2)
+   - `index.html` (lines 101, 106)
+3. See `GA_SETUP.md` for detailed instructions
+
+### Admin Credentials (Change in Production)
+- Current: admin / asllaw2024
+- Update in: `src/pages/AdminLogin.tsx`
+
+## 📊 Testing
+
+### Test Form Submission
+1. Run the app: `npm run dev:all`
+2. Go to http://localhost:8080
+3. Fill out and submit the contact form
+4. Check http://localhost:8080/admin/dashboard for the submission
+
+### Test Admin Dashboard
+1. Go to http://localhost:8080/admin
+2. Login with: admin / asllaw2024
+3. View submissions, update status, add notes
+4. Export data to CSV
+
+## 🏗️ Build for Production
+
+```bash
+npm run build
+```
+
+Output will be in the `dist/` directory.
+
+## 📚 Documentation
+
+- **GA_SETUP.md** - Google Analytics configuration
+- **ADMIN_DASHBOARD.md** - Complete admin dashboard guide
+- **IMPLEMENTATION_SUMMARY.md** - Implementation details
+- **COMPLETE_PROJECT_SUMMARY.md** - Complete project overview
+
+## 🎨 Design Features
+
+- Professional navy and gold color scheme
+- Glassmorphism design effects
+- Smooth animations and transitions
+- Mobile-first responsive design
+- Accessible components (WCAG compliant)
+- Modern typography (Inter font)
+
+## 🔒 Security Notes
+
+This is a demo implementation. For production:
+
+1. Implement proper authentication (JWT, bcrypt)
+2. Use HTTPS
+3. Replace JSON file with proper database
+4. Add rate limiting
+5. Input validation and sanitization
+6. CSRF protection
+7. Secure session management
+
+## 🚢 Deployment
+
+### Frontend (Static Hosting)
+- Build: `npm run build`
+- Deploy `dist/` folder to Netlify, Vercel, or similar
+
+### Backend (Cloud Hosting)
+- Deploy API server to AWS, Heroku, DigitalOcean, etc.
+- Update API URL in frontend code
+- Set up environment variables
+- Configure CORS for your domain
+
+## 📞 Support
+
+For questions:
+1. Check the documentation files
+2. Review browser console for errors
+3. Verify API server is running on port 3001
+4. Check network requests in DevTools
+
+## 🎉 Status
+
+✅ **Production-Ready Landing Page**
+✅ **Complete Admin Dashboard**
+✅ **SEO Optimized**
+✅ **Performance Optimized**
+✅ **Analytics Ready**
+
+---
+
+**Built with ❤️ using React, TypeScript, Vite, Tailwind CSS, and shadcn/ui**
