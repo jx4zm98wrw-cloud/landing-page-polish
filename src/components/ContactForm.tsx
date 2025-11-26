@@ -121,7 +121,7 @@ const ContactForm = ({ isCompact = false }: ContactFormProps) => {
         submissionData.logoType = logoFile.type;
       }
 
-      const response = await fetch('/api/contact', {
+      const response = await fetch('https://api.asl.mirbase.io.vn/api/contact', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
